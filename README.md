@@ -45,7 +45,7 @@ docker container start <id_контейнера>
     … UNION SELECT 1,2,3,4,5 -- foo
     ```
 
-2. Получения имени базы данных:
+2. Получение имени базы данных:
 
     ```sql
     … UNION SELECT 1,DATABASE(),3,4,5 -- bar
