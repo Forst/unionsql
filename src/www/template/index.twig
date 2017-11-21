@@ -1,0 +1,13 @@
+{% extends "_common.twig" %}
+
+{% block main %}
+    {% for item in news %}
+        <article class="card mt-3" id="{{ item.id }}">
+            <div class="card-body">
+                <h2 class="card-title">{{ item.title }}</h2>
+                <div class="card-subtitle mb-2 text-muted">{{ item.name }} &bull; {{ item.created }} UTC</div>
+                <p class="card-text">{{ item.text|nl2br }}</p>
+            </div>
+        </article>
+    {% endfor %}
+{% endblock %}

@@ -1,0 +1,80 @@
+{%- macro item(name, url, id, current_id) %}
+<li class="nav-item{% if id == current_id %} active{% endif %}">
+    <a class="nav-link" href="{{ url }}">{{ name }}{% if id == current_id %} <span class="sr-only">(текущая страница){% endif %}</span></a>
+</li>
+{% endmacro -%}
+{%- import _self as menu -%}
+
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <!-- Метаданные -->
+    <title>{{ cfg.name_short }}{% if title %} :: {{ title }}{% endif %}</title>
+    <meta name="description" content="{{ cfg.desc_short }}"/>
+    <meta name="keywords" content="{{ cfg.keywords }}"/>
+    <meta name="author" content="Фостер Сноухилл"/>
+    <meta name="application-name" content="{{ cfg.name_short }}"/>
+
+    <!-- Стили -->
+    <link href="css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Специфические параметры для устройств -->
+    <!-- Apple -->
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-title" content="{{ cfg.name_short }}"/>
+    <!-- Android, Chrome OS -->
+    <meta name="mobile-web-app-capable" content="yes"/>
+</head>
+
+<body style="padding-top: 80px">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="/">{{ cfg.name_short }}</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Показать или скрыть меню навигации">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbar">
+            <ul class="navbar-nav mr-auto">
+                {{ menu.item('Новости', '/', 'index', page) }}
+                {% if authdata.is_authenticated %}{{ menu.item('Разместить', '/post.php', 'post', page) }}{% endif %}
+            </ul>
+            <ul class="navbar-nav">
+                {% if authdata.is_authenticated -%}
+                    {{ menu.item('Выйти (' ~ authdata.username ~ ')', '/logout.php', 'logout', page)}}
+                {%- else -%}
+                    {{ menu.item('Войти', '/login.php', 'login', page) }}
+                {%- endif %}
+            </ul>
+            <form class="form-inline" method="post" action="/">
+                <input class="form-control ml-sm-3 mr-sm-2 mt-2 mt-sm-0" type="text" name="query" placeholder="Поисковый запрос" aria-label="Поиск" value="{{ post.query }}">
+                <button class="btn btn-outline-light my-3 my-sm-0" type="submit">Искать</button>
+            </form>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    {% if title %}<h1>{{ title }}</h1>{% endif %}
+
+    {% for msg in msgs -%}
+    <div class="alert alert-{{ msg.level }} mt-3" role="alert">
+        {{ msg.text|raw }}
+    </div>
+    {%- endfor %}
+
+    {% block main %}{% endblock %}
+</div>
+
+<script src="js/jquery.min.js"></script>
+<script src="js/popper.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
+</body>
+</html>

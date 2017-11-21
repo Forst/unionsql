@@ -1,0 +1,15 @@
+{% extends "_common.twig" %}
+
+{% block main %}
+<form method="post" action="">
+    <div class="form-group">
+        <label for="username">Имя пользователя</label>
+        <input class="form-control" id="username" name="username" placeholder="Введите имя пользователя" maxlength="32" required="required" value="{{ post.username }}"/>
+    </div>
+    <div class="form-group">
+        <label for="password">Пароль</label>
+        <input type="password" class="form-control" id="password" name="password" placeholder="Введите пароль" required="required"/>
+    </div>
+    <button type="submit" class="btn btn-primary">Войти</button>
+</form>
+{% endblock %}
